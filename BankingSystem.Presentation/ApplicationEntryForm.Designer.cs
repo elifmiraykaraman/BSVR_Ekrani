@@ -56,10 +56,11 @@
             // btnSearch
             // 
             btnSearch.BackColor = SystemColors.MenuHighlight;
+            btnSearch.Font = new Font("Georgia", 9F, FontStyle.Bold);
             btnSearch.ForeColor = SystemColors.ControlLightLight;
-            btnSearch.Location = new Point(228, 12);
+            btnSearch.Location = new Point(237, 30);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(121, 82);
+            btnSearch.Size = new Size(96, 50);
             btnSearch.TabIndex = 0;
             btnSearch.Text = "🔍 ARA";
             btnSearch.UseVisualStyleBackColor = false;
@@ -88,6 +89,7 @@
             // 
             dgvApplications.AllowUserToAddRows = false;
             dgvApplications.AllowUserToOrderColumns = true;
+            dgvApplications.BackgroundColor = SystemColors.Control;
             dgvApplications.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvApplications.Columns.AddRange(new DataGridViewColumn[] { colTransactionDate, colReferenceNo, colStatus, colCategory, colProductCode, colProductName, calAmount, colInstallments });
             dgvApplications.Location = new Point(12, 100);
@@ -157,6 +159,7 @@
             // btnNewApplication
             // 
             btnNewApplication.BackColor = SystemColors.Highlight;
+            btnNewApplication.Font = new Font("Georgia", 9F, FontStyle.Bold);
             btnNewApplication.ForeColor = SystemColors.ControlLightLight;
             btnNewApplication.Location = new Point(31, 447);
             btnNewApplication.Name = "btnNewApplication";
@@ -169,6 +172,7 @@
             // btnDetails
             // 
             btnDetails.BackColor = SystemColors.Highlight;
+            btnDetails.Font = new Font("Georgia", 9F, FontStyle.Bold);
             btnDetails.ForeColor = SystemColors.ControlLightLight;
             btnDetails.Location = new Point(207, 447);
             btnDetails.Name = "btnDetails";
@@ -180,6 +184,7 @@
             // btnClear
             // 
             btnClear.BackColor = SystemColors.Highlight;
+            btnClear.Font = new Font("Georgia", 9F, FontStyle.Bold);
             btnClear.ForeColor = SystemColors.ControlLightLight;
             btnClear.Location = new Point(345, 447);
             btnClear.Name = "btnClear";
@@ -192,6 +197,7 @@
             // btnExit
             // 
             btnExit.BackColor = SystemColors.Highlight;
+            btnExit.Font = new Font("Georgia", 9F, FontStyle.Bold);
             btnExit.ForeColor = SystemColors.ControlLightLight;
             btnExit.Location = new Point(466, 447);
             btnExit.Name = "btnExit";
@@ -214,9 +220,8 @@
             lblIdentityValue.AutoSize = true;
             lblIdentityValue.Location = new Point(122, 69);
             lblIdentityValue.Name = "lblIdentityValue";
-            lblIdentityValue.Size = new Size(38, 15);
+            lblIdentityValue.Size = new Size(0, 15);
             lblIdentityValue.TabIndex = 9;
-            lblIdentityValue.Text = "label2";
             // 
             // label2
             // 
@@ -241,18 +246,16 @@
             lblFirstNameValue.AutoSize = true;
             lblFirstNameValue.Location = new Point(455, 32);
             lblFirstNameValue.Name = "lblFirstNameValue";
-            lblFirstNameValue.Size = new Size(38, 15);
+            lblFirstNameValue.Size = new Size(0, 15);
             lblFirstNameValue.TabIndex = 12;
-            lblFirstNameValue.Text = "label4";
             // 
             // lblLastNameValue
             // 
             lblLastNameValue.AutoSize = true;
             lblLastNameValue.Location = new Point(455, 69);
             lblLastNameValue.Name = "lblLastNameValue";
-            lblLastNameValue.Size = new Size(38, 15);
+            lblLastNameValue.Size = new Size(0, 15);
             lblLastNameValue.TabIndex = 13;
-            lblLastNameValue.Text = "label5";
             // 
             // ApplicationEntryForm
             // 
@@ -280,7 +283,7 @@
             PerformLayout();
         }
 
-        
+
 
         #endregion
 
