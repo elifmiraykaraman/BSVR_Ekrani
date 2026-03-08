@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
 using System.Windows.Forms;
 
 namespace BankingSystem.Presentation
@@ -15,6 +18,9 @@ namespace BankingSystem.Presentation
         private bool _applicationCreated = false;
         private readonly List<CheckBox> _redCheckboxes = new List<CheckBox>();
         private string connString = @"Server=.\SQLEXPRESS; Database=CoreBankingSystem; Integrated Security=True; TrustServerCertificate=True;";
+        private const string SenderEmail = "elifmiraykaraman@gmail.com";
+        // Gmail: Ayarlar > Güvenlik > 2 Adımlı Doğrulama açık olmalı; oradan Uygulama Şifresi üretin.
+        private const string SenderPassword = "htsz cyjo cwxo qwwn";
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsReadOnly { get; set; } = false;
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -22,6 +28,7 @@ namespace BankingSystem.Presentation
         public FormNewApplication(int custId, string custNum, string phone)
         {
             InitializeComponent();
+            EnsureEmailColumnExists();
             this.FormClosing += FormNewApplication_FormClosing;
             this.selectedCustomerId = custId;
 
@@ -73,6 +80,24 @@ namespace BankingSystem.Presentation
                 if (ctrl.HasChildren)
                     SetAllControlsReadOnly(ctrl);
             }
+        }
+
+        private void EnsureEmailColumnExists()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+                    string sql = @"IF NOT EXISTS (
+                            SELECT 1 FROM sys.columns
+                            WHERE object_id = OBJECT_ID('Customers') AND name = 'Email'
+                        )
+                        ALTER TABLE Customers ADD Email NVARCHAR(254) NULL;";
+                    new SqlCommand(sql, conn).ExecuteNonQuery();
+                }
+            }
+            catch { }
         }
 
         private string GenerateReferenceNumber()
@@ -164,6 +189,19 @@ namespace BankingSystem.Presentation
                     MessageBox.Show("Kayıt Hatası: " + ex.Message);
                 }
             }
+
+            try
+            {
+                using (SqlConnection emailConn = new SqlConnection(connString))
+                {
+                    SqlCommand emailCmd = new SqlCommand("UPDATE Customers SET Email = @email WHERE CustomerID = @custId", emailConn);
+                    emailCmd.Parameters.AddWithValue("@email", txtEmail.Text.Trim());
+                    emailCmd.Parameters.AddWithValue("@custId", this.selectedCustomerId);
+                    emailConn.Open();
+                    emailCmd.ExecuteNonQuery();
+                }
+            }
+            catch { /* Email kolonu henüz yoksa sessizce geç */ }
         }
 
         private void btnSelectProduct_Click(object sender, EventArgs e)
@@ -204,6 +242,20 @@ namespace BankingSystem.Presentation
                 }
                 catch (Exception ex) { MessageBox.Show("Hata: " + ex.Message); }
             }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    SqlCommand cmd = new SqlCommand("SELECT Email FROM Customers WHERE CustomerID = @id", conn);
+                    cmd.Parameters.AddWithValue("@id", custId);
+                    conn.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    if (dr.Read() && dr["Email"] != DBNull.Value)
+                        txtEmail.Text = dr["Email"].ToString();
+                }
+            }
+            catch { /* Email kolonu henüz yoksa sessizce geç */ }
         }
 
         private void btnOnay1_Click(object sender, EventArgs e)
@@ -339,6 +391,22 @@ namespace BankingSystem.Presentation
                     dr2.Close();
                 }
                 catch { /* Migration henüz uygulanmamış, sessizce geç */ }
+
+                try
+                {
+                    string emailQuery = @"
+                        SELECT c.Email FROM Applications a
+                        INNER JOIN Customers c ON a.CustomerID = c.CustomerID
+                        WHERE a.ReferenceNumber = @ref";
+
+                    SqlCommand cmdEmail = new SqlCommand(emailQuery, conn);
+                    cmdEmail.Parameters.AddWithValue("@ref", gelenRefNo);
+                    SqlDataReader drEmail = cmdEmail.ExecuteReader();
+                    if (drEmail.Read() && drEmail["Email"] != DBNull.Value)
+                        txtEmail.Text = drEmail["Email"].ToString();
+                    drEmail.Close();
+                }
+                catch { /* Email kolonu henüz yoksa sessizce geç */ }
             }
         }
 
@@ -412,6 +480,16 @@ namespace BankingSystem.Presentation
                     lblDurum.ForeColor = Color.DarkGreen;
                     label29.Text = "MEVCUT DURUM: Onaylandı";
                     label29.ForeColor = Color.DarkGreen;
+                    SendApplicationResultEmail(
+                        txtEmail.Text.Trim(),
+                        $"Ba\u015fvurunuz Onayland\u0131 \u2013 Ref: {this.BasvuruReferansNo}",
+                        $"Say\u0131n {txtFirstName.Text} {txtLastName.Text},\n\n" +
+                        $"{this.BasvuruReferansNo} referans numaral\u0131 ba\u015fvurunuz onaylanm\u0131\u015ft\u0131r.\n\n" +
+                        $"Ba\u015fvuru Tarihi : {txtAppDate.Text}\n" +
+                        $"\u00dcr\u00fcn          : {txtProduct.Text}\n" +
+                        $"Kredi Tutar\u0131  : {txtCreditAmount.Text} TL\n" +
+                        $"Vade          : {txtMaturity.Text} ay\n\n" +
+                        "Sayg\u0131lar\u0131m\u0131zla,\nBankac\u0131l\u0131k Sistemi");
                 };
 
                 var btnReddet = new Button
@@ -443,6 +521,15 @@ namespace BankingSystem.Presentation
                     lblDurum.ForeColor = Color.Red;
                     label29.Text = "MEVCUT DURUM: Reddedildi";
                     label29.ForeColor = Color.Red;
+                    string sebepListesi = string.Join("\n", secilenSebepler.Select(r => "- " + r));
+                    SendApplicationResultEmail(
+                        txtEmail.Text.Trim(),
+                        $"Ba\u015fvurunuz Reddedildi \u2013 Ref: {this.BasvuruReferansNo}",
+                        $"Say\u0131n {txtFirstName.Text} {txtLastName.Text},\n\n" +
+                        $"{this.BasvuruReferansNo} referans numaral\u0131 ba\u015fvurunuz reddedilmi\u015ftir.\n\n" +
+                        $"Red Sebebi/Sebepleri:\n{sebepListesi}\n\n" +
+                        $"Ba\u015fvuru Tarihi : {txtAppDate.Text}\n\n" +
+                        "Sayg\u0131lar\u0131m\u0131zla,\nBankac\u0131l\u0131k Sistemi");
                 };
 
                 tabOnayRed.Controls.AddRange(new Control[] { gb1, gb2, gb3, gb4, gb5, lblDurum, btnOnayla, btnReddet });
@@ -465,6 +552,39 @@ namespace BankingSystem.Presentation
                     catch (Exception ex) { MessageBox.Show("Red sebebi kaydedilemedi: " + ex.Message); }
                 }
             }
+
+        private void SendApplicationResultEmail(string toEmail, string subject, string body)
+        {
+            if (string.IsNullOrWhiteSpace(toEmail))
+            {
+                MessageBox.Show("Müşteriye ait e-posta adresi girilmemiş; mail gönderilemedi.");
+                return;
+            }
+            try
+            {
+                using var client = new SmtpClient("smtp.gmail.com", 587)
+                {
+                    EnableSsl = true,
+                    Credentials = new NetworkCredential(SenderEmail, SenderPassword)
+                };
+                var mail = new MailMessage
+                {
+                    From = new MailAddress(SenderEmail, "Bankacılık Sistemi", Encoding.UTF8),
+                    Subject = subject,
+                    SubjectEncoding = Encoding.UTF8,
+                    Body = body,
+                    BodyEncoding = Encoding.UTF8,
+                    IsBodyHtml = false
+                };
+                mail.To.Add(toEmail);
+                client.Send(mail);
+                MessageBox.Show("Bilgilendirme maili müşteriye gönderildi.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Mail gönderilemedi: " + ex.Message);
+            }
+        }
 
         private void FormNewApplication_FormClosing(object sender, FormClosingEventArgs e)
         {

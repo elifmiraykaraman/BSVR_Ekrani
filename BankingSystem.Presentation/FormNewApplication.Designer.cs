@@ -93,6 +93,8 @@
             label10 = new Label();
             label8 = new Label();
             label9 = new Label();
+            lblEmail = new Label();
+            txtEmail = new TextBox();
             tabEvaluation = new TabPage();
             label29 = new Label();
             groupBox11 = new GroupBox();
@@ -734,6 +736,8 @@
             groupBox4.Controls.Add(label10);
             groupBox4.Controls.Add(label8);
             groupBox4.Controls.Add(label9);
+            groupBox4.Controls.Add(lblEmail);
+            groupBox4.Controls.Add(txtEmail);
             groupBox4.Location = new Point(14, 42);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(791, 100);
@@ -812,6 +816,21 @@
             label9.Size = new Size(25, 15);
             label9.TabIndex = 1;
             label9.Text = "Adı";
+            // 
+            // lblEmail
+            // 
+            lblEmail.AutoSize = true;
+            lblEmail.Location = new Point(510, 29);
+            lblEmail.Name = "lblEmail";
+            lblEmail.TabIndex = 8;
+            lblEmail.Text = "E-Posta";
+            // 
+            // txtEmail
+            // 
+            txtEmail.Location = new Point(568, 25);
+            txtEmail.Name = "txtEmail";
+            txtEmail.Size = new Size(196, 23);
+            txtEmail.TabIndex = 9;
             // 
             // tabEvaluation
             // 
@@ -1576,6 +1595,8 @@
         private TextBox txtFirstName;
         private TextBox txtBirthDate;
         private TextBox txtCustNoPersonal;
+        private Label lblEmail;
+        private TextBox txtEmail;
         private GroupBox groupBox5;
         private Label label12;
         private Label label13;
