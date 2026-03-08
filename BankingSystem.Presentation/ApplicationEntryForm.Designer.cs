@@ -89,6 +89,7 @@
             // 
             dgvApplications.AllowUserToAddRows = false;
             dgvApplications.AllowUserToOrderColumns = true;
+            dgvApplications.AutoGenerateColumns = false;
             dgvApplications.BackgroundColor = SystemColors.Control;
             dgvApplications.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvApplications.Columns.AddRange(new DataGridViewColumn[] { colTransactionDate, colReferenceNo, colStatus, colCategory, colProductCode, colProductName, calAmount, colInstallments });

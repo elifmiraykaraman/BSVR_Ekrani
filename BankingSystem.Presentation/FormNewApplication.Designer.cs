@@ -30,6 +30,7 @@
         {
             CustomerDetails = new TabControl();
             tabApplication = new TabPage();
+            tabOnayRed = new TabPage();
             btnKaydet = new Button();
             btnCikis = new Button();
             btnTemizle = new Button();
@@ -177,6 +178,7 @@
             CustomerDetails.Controls.Add(tabApplication);
             CustomerDetails.Controls.Add(tabPersonel);
             CustomerDetails.Controls.Add(tabEvaluation);
+            CustomerDetails.Controls.Add(tabOnayRed);
             CustomerDetails.Dock = DockStyle.Top;
             CustomerDetails.Location = new Point(0, 0);
             CustomerDetails.Name = "CustomerDetails";
@@ -828,6 +830,15 @@
             tabEvaluation.TabIndex = 1;
             tabEvaluation.Text = "Değerlendirme";
             tabEvaluation.UseVisualStyleBackColor = true;
+            // 
+            // tabOnayRed
+            // 
+            tabOnayRed.Location = new Point(4, 24);
+            tabOnayRed.Name = "tabOnayRed";
+            tabOnayRed.Size = new Size(862, 523);
+            tabOnayRed.TabIndex = 3;
+            tabOnayRed.Text = "Onay / Red";
+            tabOnayRed.UseVisualStyleBackColor = true;
             // 
             // label29
             // 
@@ -1509,6 +1520,7 @@
             groupBox4.PerformLayout();
             tabEvaluation.ResumeLayout(false);
             tabEvaluation.PerformLayout();
+            tabOnayRed.ResumeLayout(false);
             groupBox11.ResumeLayout(false);
             groupBox10.ResumeLayout(false);
             groupBox10.PerformLayout();
@@ -1527,6 +1539,7 @@
         private TabPage tabPersonel;
         private TabPage tabEvaluation;
         private TabPage tabApplication;
+        private TabPage tabOnayRed;
         private Button btnCikis;
         private Button btnTemizle;
         private GroupBox groupBox3;
