@@ -27,7 +27,6 @@ namespace BankingSystem.Presentation
 
         }
 
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
 
@@ -99,11 +98,6 @@ namespace BankingSystem.Presentation
         }
 
 
-        private void ClearForm()
-        {
-
-        }
-
         private void btnClearForm(object sender, EventArgs e)
         {
             txtSearchCustomerNumber.Clear();
@@ -125,9 +119,24 @@ namespace BankingSystem.Presentation
                 return;
             }
 
-            // currentId'yi arama yaptığın sırada bir değişkene kaydetmiş olmalısın
             FormNewApplication frm = new FormNewApplication(this.currentCustomerId, txtSearchCustomerNumber.Text, "05XXXXXXXXX");
             frm.ShowDialog();
+        }
+
+        private void btnDetails_Click(object sender, EventArgs e)
+        {
+            if (dgvApplications.CurrentRow != null)
+            {
+                string refNo = dgvApplications.CurrentRow.Cells["colReferenceNo"].Value.ToString();
+                FormNewApplication detayFormu = new FormNewApplication(this.currentCustomerId, txtSearchCustomerNumber.Text, "");
+                detayFormu.IsReadOnly = true;
+                detayFormu.BasvuruReferansNo = refNo;
+                detayFormu.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Lütfen listeden bir başvuru seçin.");
+            }
         }
     }
 }

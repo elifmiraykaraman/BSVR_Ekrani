@@ -180,6 +180,7 @@
             btnDetails.TabIndex = 5;
             btnDetails.Text = "Detay";
             btnDetails.UseVisualStyleBackColor = false;
+            btnDetails.Click += btnDetails_Click;
             // 
             // btnClear
             // 

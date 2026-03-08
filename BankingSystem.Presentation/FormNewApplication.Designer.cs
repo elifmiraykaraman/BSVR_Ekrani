@@ -30,9 +30,9 @@
         {
             CustomerDetails = new TabControl();
             tabApplication = new TabPage();
+            btnKaydet = new Button();
             btnCikis = new Button();
             btnTemizle = new Button();
-            btnKaydet = new Button();
             groupBox3 = new GroupBox();
             btnMinimumWage = new Button();
             txtIncomeAmount = new TextBox();
@@ -186,9 +186,9 @@
             // 
             // tabApplication
             // 
+            tabApplication.Controls.Add(btnKaydet);
             tabApplication.Controls.Add(btnCikis);
             tabApplication.Controls.Add(btnTemizle);
-            tabApplication.Controls.Add(btnKaydet);
             tabApplication.Controls.Add(groupBox3);
             tabApplication.Controls.Add(groupBox2);
             tabApplication.Controls.Add(groupBox1);
@@ -199,6 +199,19 @@
             tabApplication.TabIndex = 2;
             tabApplication.Text = "Başvuru";
             tabApplication.UseVisualStyleBackColor = true;
+            // 
+            // btnKaydet
+            // 
+            btnKaydet.BackColor = SystemColors.HotTrack;
+            btnKaydet.Font = new Font("Georgia", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            btnKaydet.ForeColor = SystemColors.ControlLightLight;
+            btnKaydet.Location = new Point(460, 471);
+            btnKaydet.Name = "btnKaydet";
+            btnKaydet.Size = new Size(75, 23);
+            btnKaydet.TabIndex = 19;
+            btnKaydet.Text = "Kaydet";
+            btnKaydet.UseVisualStyleBackColor = false;
+            btnKaydet.Click += btnKaydet_Click;
             // 
             // btnCikis
             // 
@@ -214,6 +227,7 @@
             // btnTemizle
             // 
             btnTemizle.BackColor = SystemColors.HotTrack;
+            btnTemizle.Font = new Font("Georgia", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
             btnTemizle.ForeColor = SystemColors.ControlLightLight;
             btnTemizle.Location = new Point(586, 471);
             btnTemizle.Name = "btnTemizle";
@@ -222,18 +236,6 @@
             btnTemizle.Text = "Temizle";
             btnTemizle.UseVisualStyleBackColor = false;
             btnTemizle.Click += btnTemizle_Click;
-            // 
-            // btnKaydet
-            // 
-            btnKaydet.BackColor = SystemColors.HotTrack;
-            btnKaydet.ForeColor = SystemColors.ControlLightLight;
-            btnKaydet.Location = new Point(478, 471);
-            btnKaydet.Name = "btnKaydet";
-            btnKaydet.Size = new Size(75, 23);
-            btnKaydet.TabIndex = 16;
-            btnKaydet.Text = "Kaydet";
-            btnKaydet.UseVisualStyleBackColor = false;
-            btnKaydet.Click += btnKaydet_Click;
             // 
             // groupBox3
             // 
@@ -498,11 +500,12 @@
             // btnKayit
             // 
             btnKayit.BackColor = SystemColors.HotTrack;
+            btnKayit.Font = new Font("Georgia", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
             btnKayit.ForeColor = SystemColors.ControlLightLight;
-            btnKayit.Location = new Point(589, 452);
+            btnKayit.Location = new Point(614, 458);
             btnKayit.Name = "btnKayit";
             btnKayit.Size = new Size(75, 23);
-            btnKayit.TabIndex = 17;
+            btnKayit.TabIndex = 5;
             btnKayit.Text = "Kayıt";
             btnKayit.UseVisualStyleBackColor = false;
             btnKayit.Click += btnKayit_Click;
@@ -1033,7 +1036,7 @@
             button25.BackColor = SystemColors.ScrollBar;
             button25.Font = new Font("Georgia", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
             button25.ForeColor = SystemColors.WindowFrame;
-            button25.Location = new Point(494, 483);
+            button25.Location = new Point(606, 483);
             button25.Name = "button25";
             button25.Size = new Size(82, 23);
             button25.TabIndex = 16;
@@ -1155,7 +1158,7 @@
             btnExit.BackColor = SystemColors.HotTrack;
             btnExit.Font = new Font("Georgia", 9F, FontStyle.Bold);
             btnExit.ForeColor = SystemColors.ControlLightLight;
-            btnExit.Location = new Point(651, 483);
+            btnExit.Location = new Point(711, 483);
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(75, 23);
             btnExit.TabIndex = 15;
@@ -1482,6 +1485,7 @@
             Controls.Add(CustomerDetails);
             Name = "FormNewApplication";
             Text = "FormNewApllication";
+            Load += FormNewApplication_Load_1;
             CustomerDetails.ResumeLayout(false);
             tabApplication.ResumeLayout(false);
             groupBox3.ResumeLayout(false);
@@ -1525,7 +1529,6 @@
         private TabPage tabApplication;
         private Button btnCikis;
         private Button btnTemizle;
-        private Button btnKaydet;
         private GroupBox groupBox3;
         private Button btnMinimumWage;
         private TextBox txtIncomeAmount;
@@ -1583,7 +1586,6 @@
         private Label label23;
         private Label label22;
         private Label label21;
-        private Button btnKayit;
         private GroupBox groupBox7;
         private TextBox textBox1;
         private Label label24;
@@ -1640,5 +1642,7 @@
         private Button btnExit;
         private Button button25;
         private Label label29;
+        private Button btnKaydet;
+        private Button btnKayit;
     }
 }
