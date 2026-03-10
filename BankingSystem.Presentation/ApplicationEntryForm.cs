@@ -71,7 +71,8 @@ namespace BankingSystem.Presentation
                                 FROM Applications a
                                 INNER JOIN Products p ON a.ProductID = p.ProductID
                                 INNER JOIN Customers c ON a.CustomerID = c.CustomerID
-                                WHERE c.CustomerNumber = @custNum";
+                                WHERE c.CustomerNumber = @custNum
+                                ORDER BY a.TransactionDate DESC";
 
                         SqlDataAdapter da = new SqlDataAdapter(appQuery, conn);
                         da.SelectCommand.Parameters.AddWithValue("@custNum", int.Parse(txtSearchCustomerNumber.Text));

@@ -17,6 +17,8 @@ namespace BankingSystem.Presentation
         private int currentProductId;
         private bool _applicationCreated = false;
         private readonly List<CheckBox> _redCheckboxes = new List<CheckBox>();
+        private string _applicationStatus = string.Empty;
+        private string _rejectionReason   = string.Empty;
         private string connString = @"Server=.\SQLEXPRESS; Database=CoreBankingSystem; Integrated Security=True; TrustServerCertificate=True;";
         private const string SenderEmail = "elifmiraykaraman@gmail.com";
         // Gmail: Ayarlar > Güvenlik > 2 Adımlı Doğrulama açık olmalı; oradan Uygulama Şifresi üretin.
@@ -48,8 +50,12 @@ namespace BankingSystem.Presentation
             if (this.IsReadOnly)
             {
                 SetAllControlsReadOnly(this);
-                BuildOnayRedTab();
                 VerileriDoldur(this.BasvuruReferansNo);
+
+                if (_applicationStatus == "İptal")
+                    CustomerDetails.TabPages.Remove(tabOnayRed);
+                else
+                    BuildOnayRedTab();
             }
             else
             {
@@ -320,6 +326,7 @@ namespace BankingSystem.Presentation
                 // --- Temel sorgu: orijinal şemada kesin olan sütunlar ---
                 string baseQuery = @"
                     SELECT a.ReferenceNumber, a.Amount, a.Installments, a.Status, a.TransactionDate,
+                           a.RejectionReason,
                            p.ProductCode, p.ProductName,
                            a.HouseStatus, a.Address,
                            a.ResidenceDuration,
@@ -341,7 +348,10 @@ namespace BankingSystem.Presentation
                         txtRefNo.Text        = dr["ReferenceNumber"].ToString();
                         txtCreditAmount.Text = dr["Amount"].ToString();
                         txtMaturity.Text     = dr["Installments"].ToString();
-                        label29.Text         = "MEVCUT DURUM: " + dr["Status"].ToString();
+                        _applicationStatus   = dr["Status"].ToString();
+                        label29.Text         = "MEVCUT DURUM: " + _applicationStatus;
+                        if (dr["RejectionReason"] != DBNull.Value)
+                            _rejectionReason = dr["RejectionReason"].ToString();
 
                         if (dr["TransactionDate"] != DBNull.Value)
                             txtAppDate.Text = Convert.ToDateTime(dr["TransactionDate"]).ToShortDateString();
@@ -532,7 +542,45 @@ namespace BankingSystem.Presentation
                         "Sayg\u0131lar\u0131m\u0131zla,\nBankac\u0131l\u0131k Sistemi");
                 };
 
-                tabOnayRed.Controls.AddRange(new Control[] { gb1, gb2, gb3, gb4, gb5, lblDurum, btnOnayla, btnReddet });
+                // --- Karar verilmişse: butonları pasifleştir, sonuçu göster ---
+                bool kararVerildi = _applicationStatus is "Onaylandı" or "Reddedildi";
+
+                if (kararVerildi)
+                {
+                    btnOnayla.Enabled = false;
+                    btnReddet.Enabled = false;
+                    lblDurum.ForeColor = _applicationStatus == "Onaylandı" ? Color.DarkGreen : Color.Red;
+                }
+
+                if (_applicationStatus == "Reddedildi" && !string.IsNullOrEmpty(_rejectionReason))
+                {
+                    var sebepler = _rejectionReason.Split(new[] { "; " }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var cb in _redCheckboxes)
+                    {
+                        cb.Checked = sebepler.Contains(cb.Text);
+                        cb.Enabled = false;
+                    }
+                }
+
+                var kontrolListesi = new List<Control> { gb1, gb2, gb3, gb4, gb5, lblDurum, btnOnayla, btnReddet };
+
+                if (kararVerildi)
+                {
+                    var lblSonuc = new Label
+                    {
+                        Text      = _applicationStatus == "Onaylandı"
+                                      ? "✔  BAŞVURU ONAYLANMIŞTIR"
+                                      : "✘  BAŞVURU REDDEDİLMİŞTİR",
+                        Location  = new Point(8, 335),
+                        Size      = new Size(840, 35),
+                        Font      = new Font("Georgia", 13F, FontStyle.Bold),
+                        ForeColor = _applicationStatus == "Onaylandı" ? Color.DarkGreen : Color.DarkRed,
+                        TextAlign = ContentAlignment.MiddleCenter
+                    };
+                    kontrolListesi.Add(lblSonuc);
+                }
+
+                tabOnayRed.Controls.AddRange(kontrolListesi.ToArray());
             }
 
             private void SaveRejectionReason(string refNo, string reason)
