@@ -89,7 +89,7 @@
             // 
             dgvApplications.AllowUserToAddRows = false;
             dgvApplications.AllowUserToOrderColumns = true;
-            dgvApplications.AutoGenerateColumns = false;
+            dgvApplications.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvApplications.BackgroundColor = SystemColors.Control;
             dgvApplications.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvApplications.Columns.AddRange(new DataGridViewColumn[] { colTransactionDate, colReferenceNo, colStatus, colCategory, colProductCode, colProductName, calAmount, colInstallments });
@@ -100,6 +100,7 @@
             dgvApplications.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvApplications.Size = new Size(834, 341);
             dgvApplications.TabIndex = 3;
+            dgvApplications.DoubleClick += btnDetails_Click;
             // 
             // colTransactionDate
             // 
@@ -159,6 +160,7 @@
             // 
             // btnNewApplication
             // 
+            btnNewApplication.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnNewApplication.BackColor = SystemColors.Highlight;
             btnNewApplication.Font = new Font("Georgia", 9F, FontStyle.Bold);
             btnNewApplication.ForeColor = SystemColors.ControlLightLight;
@@ -172,6 +174,7 @@
             // 
             // btnDetails
             // 
+            btnDetails.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDetails.BackColor = SystemColors.Highlight;
             btnDetails.Font = new Font("Georgia", 9F, FontStyle.Bold);
             btnDetails.ForeColor = SystemColors.ControlLightLight;
@@ -185,6 +188,7 @@
             // 
             // btnClear
             // 
+            btnClear.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnClear.BackColor = SystemColors.Highlight;
             btnClear.Font = new Font("Georgia", 9F, FontStyle.Bold);
             btnClear.ForeColor = SystemColors.ControlLightLight;
@@ -198,6 +202,7 @@
             // 
             // btnExit
             // 
+            btnExit.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnExit.BackColor = SystemColors.Highlight;
             btnExit.Font = new Font("Georgia", 9F, FontStyle.Bold);
             btnExit.ForeColor = SystemColors.ControlLightLight;
@@ -279,7 +284,7 @@
             Controls.Add(lblSearchTitle);
             Controls.Add(btnSearch);
             Name = "ApplicationEntryForm";
-            Text = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
             ((System.ComponentModel.ISupportInitialize)dgvApplications).EndInit();
             ResumeLayout(false);
             PerformLayout();

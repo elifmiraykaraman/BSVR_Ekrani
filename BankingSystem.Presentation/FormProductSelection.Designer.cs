@@ -123,6 +123,7 @@
             dgvProductList.ReadOnly = true;
             dgvProductList.Size = new Size(773, 404);
             dgvProductList.TabIndex = 2;
+            dgvProductList.DoubleClick += btnSec_Click;
             // 
             // btnSec
             // 
@@ -333,7 +334,6 @@
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Name = "FormProductSelection";
-            Text = "FormProductSelection";
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProductList).EndInit();

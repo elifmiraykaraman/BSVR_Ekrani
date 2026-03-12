@@ -30,7 +30,6 @@
         {
             CustomerDetails = new TabControl();
             tabApplication = new TabPage();
-            tabOnayRed = new TabPage();
             btnKaydet = new Button();
             btnCikis = new Button();
             btnTemizle = new Button();
@@ -152,6 +151,7 @@
             textBox1 = new TextBox();
             label24 = new Label();
             button1 = new Button();
+            tabOnayRed = new TabPage();
             CustomerDetails.SuspendLayout();
             tabApplication.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -206,6 +206,7 @@
             // 
             // btnKaydet
             // 
+            btnKaydet.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnKaydet.BackColor = SystemColors.HotTrack;
             btnKaydet.Font = new Font("Georgia", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
             btnKaydet.ForeColor = SystemColors.ControlLightLight;
@@ -219,6 +220,7 @@
             // 
             // btnCikis
             // 
+            btnCikis.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCikis.BackColor = SystemColors.HotTrack;
             btnCikis.ForeColor = SystemColors.ControlLightLight;
             btnCikis.Location = new Point(695, 471);
@@ -230,6 +232,7 @@
             // 
             // btnTemizle
             // 
+            btnTemizle.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnTemizle.BackColor = SystemColors.HotTrack;
             btnTemizle.Font = new Font("Georgia", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
             btnTemizle.ForeColor = SystemColors.ControlLightLight;
@@ -822,6 +825,7 @@
             lblEmail.AutoSize = true;
             lblEmail.Location = new Point(510, 29);
             lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(47, 15);
             lblEmail.TabIndex = 8;
             lblEmail.Text = "E-Posta";
             // 
@@ -849,15 +853,6 @@
             tabEvaluation.TabIndex = 1;
             tabEvaluation.Text = "Değerlendirme";
             tabEvaluation.UseVisualStyleBackColor = true;
-            // 
-            // tabOnayRed
-            // 
-            tabOnayRed.Location = new Point(4, 24);
-            tabOnayRed.Name = "tabOnayRed";
-            tabOnayRed.Size = new Size(862, 523);
-            tabOnayRed.TabIndex = 3;
-            tabOnayRed.Text = "Onay / Red";
-            tabOnayRed.UseVisualStyleBackColor = true;
             // 
             // label29
             // 
@@ -1507,6 +1502,15 @@
             button1.Text = "Ön Başvuru  İzleme";
             button1.UseVisualStyleBackColor = false;
             // 
+            // tabOnayRed
+            // 
+            tabOnayRed.Location = new Point(4, 24);
+            tabOnayRed.Name = "tabOnayRed";
+            tabOnayRed.Size = new Size(862, 523);
+            tabOnayRed.TabIndex = 3;
+            tabOnayRed.Text = "Onay / Red";
+            tabOnayRed.UseVisualStyleBackColor = true;
+            // 
             // FormNewApplication
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1514,7 +1518,6 @@
             ClientSize = new Size(870, 550);
             Controls.Add(CustomerDetails);
             Name = "FormNewApplication";
-            Text = "FormNewApllication";
             Load += FormNewApplication_Load_1;
             CustomerDetails.ResumeLayout(false);
             tabApplication.ResumeLayout(false);
@@ -1539,7 +1542,6 @@
             groupBox4.PerformLayout();
             tabEvaluation.ResumeLayout(false);
             tabEvaluation.PerformLayout();
-            tabOnayRed.ResumeLayout(false);
             groupBox11.ResumeLayout(false);
             groupBox10.ResumeLayout(false);
             groupBox10.PerformLayout();

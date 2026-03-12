@@ -313,7 +313,7 @@ namespace BankingSystem.Presentation
 
         private void btnMinimumWage_Click_1(object sender, EventArgs e)
         {
-            txtIncomeAmount.Text = "22104";
+            txtIncomeAmount.Text = "28075";
         }
 
 
