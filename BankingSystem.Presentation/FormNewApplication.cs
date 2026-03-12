@@ -43,6 +43,7 @@ namespace BankingSystem.Presentation
             txtMaturity.TextChanged += (s, e) => HesaplaTaksit();
 
             GetCustomerDetails(custId);
+            txtEmail.Clear();
         }
 
         private void FormNewApplication_Load_1(object sender, EventArgs e)
@@ -196,11 +197,19 @@ namespace BankingSystem.Presentation
                 }
             }
 
+            if (string.IsNullOrWhiteSpace(txtEmail.Text))
+            {
+                MessageBox.Show("Müşteri mail adresi boş olamaz!");
+                return;
+            }
+
             try
             {
                 using (SqlConnection emailConn = new SqlConnection(connString))
                 {
-                    SqlCommand emailCmd = new SqlCommand("UPDATE Customers SET Email = @email WHERE CustomerID = @custId", emailConn);
+                    SqlCommand emailCmd = new SqlCommand(
+                        "UPDATE Customers SET Email = @email WHERE CustomerID = @custId",
+                        emailConn);
                     emailCmd.Parameters.AddWithValue("@email", txtEmail.Text.Trim());
                     emailCmd.Parameters.AddWithValue("@custId", this.selectedCustomerId);
                     emailConn.Open();
@@ -209,6 +218,7 @@ namespace BankingSystem.Presentation
             }
             catch { /* Email kolonu henüz yoksa sessizce geç */ }
         }
+        
 
         private void btnSelectProduct_Click(object sender, EventArgs e)
         {
@@ -249,19 +259,7 @@ namespace BankingSystem.Presentation
                 catch (Exception ex) { MessageBox.Show("Hata: " + ex.Message); }
             }
 
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connString))
-                {
-                    SqlCommand cmd = new SqlCommand("SELECT Email FROM Customers WHERE CustomerID = @id", conn);
-                    cmd.Parameters.AddWithValue("@id", custId);
-                    conn.Open();
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    if (dr.Read() && dr["Email"] != DBNull.Value)
-                        txtEmail.Text = dr["Email"].ToString();
-                }
-            }
-            catch { /* Email kolonu henüz yoksa sessizce geç */ }
+            // E-posta alanı yeni başvuruda boş bırakılır.
         }
 
         private void btnOnay1_Click(object sender, EventArgs e)

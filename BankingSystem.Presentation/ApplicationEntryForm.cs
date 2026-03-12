@@ -128,7 +128,29 @@ namespace BankingSystem.Presentation
         {
             if (dgvApplications.CurrentRow != null)
             {
-                string refNo = dgvApplications.CurrentRow.Cells["colReferenceNo"].Value.ToString();
+                string refNo = string.Empty;
+                if (dgvApplications.CurrentRow.DataBoundItem is DataRowView rowView &&
+                    rowView.Row.Table.Columns.Contains("ReferenceNumber"))
+                {
+                    refNo = rowView["ReferenceNumber"].ToString();
+                }
+                else
+                {
+                    var refCol = dgvApplications.Columns
+                        .Cast<DataGridViewColumn>()
+                        .FirstOrDefault(c =>
+                            string.Equals(c.DataPropertyName, "ReferenceNumber", StringComparison.OrdinalIgnoreCase) ||
+                            string.Equals(c.Name, "ReferenceNumber", StringComparison.OrdinalIgnoreCase));
+
+                    if (refCol != null)
+                        refNo = dgvApplications.CurrentRow.Cells[refCol.Index].Value?.ToString() ?? string.Empty;
+                }
+
+                if (string.IsNullOrWhiteSpace(refNo))
+                {
+                    MessageBox.Show("Başvuru referans numarası okunamadı.");
+                    return;
+                }
                 FormNewApplication detayFormu = new FormNewApplication(this.currentCustomerId, txtSearchCustomerNumber.Text, "");
                 detayFormu.IsReadOnly = true;
                 detayFormu.BasvuruReferansNo = refNo;
