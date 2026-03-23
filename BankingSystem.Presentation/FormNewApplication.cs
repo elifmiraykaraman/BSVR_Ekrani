@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,7 +22,7 @@ namespace BankingSystem.Presentation
         private string connString = @"Server=.\SQLEXPRESS; Database=CoreBankingSystem; Integrated Security=True; TrustServerCertificate=True;";
         private const string SenderEmail = "elifmiraykaraman@gmail.com";
         // Gmail: Ayarlar > Güvenlik > 2 Adımlı Doğrulama açık olmalı; oradan Uygulama Şifresi üretin.
-        private const string SenderPassword = "htsz cyjo cwxo qwwn";
+        private const string SenderPassword = "##";
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsReadOnly { get; set; } = false;
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
